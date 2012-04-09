@@ -45,6 +45,7 @@ public class SessionData {
 	public SessionData(int version, String message,Date expiry){
 		this.message = message;
 		discardTime = expiry;
+		refresh();
 	}
 	
 	/**
@@ -62,7 +63,13 @@ public class SessionData {
 	public void refresh(){
 		refresh(discardAge);
 	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return getString();
+	}
 	public String getString(){
+		System.out.println("SessionData.getString() Discardtime :"+discardTime);
 		return svn.getString()+"_"+message+"_"+discardTime.toString();
 	}
 	public void setSessionVersion(SessionVersion svn){

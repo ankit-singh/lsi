@@ -1,5 +1,6 @@
 package com.ankit.session.rpc;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -83,12 +84,16 @@ public class WriteHelper {
 		return null;
 }
 private SessionData storeBackUp(SessionData data, SessionID sid){
-	HashSet<String> mbrlist = SimpleDBManager.getInstance().getMemberSet();
+	ArrayList<String> arr = new ArrayList<String>(SimpleDBManager.getInstance().getMemberSet());
 	data.getSessionVersion().setBackup(null);
-	log.info("MEMBER LIST SIZE :"+mbrlist.size());
-	Iterator<String> itr = mbrlist.iterator();
-	while( data == null && itr.hasNext()){
-		data = writeSessionData(new IPP(itr.next()), data, sid);
+	log.info("MEMBER LIST SIZE :"+arr.size());
+	for(String s: arr){
+		log.info("SENDING WRITE REQUEST :"+s);
+		data = writeSessionData(new IPP(s), data, sid);
+		if(data.getSessionVersion().getBackup() !=null){
+			log.info("WRITE SUCCESS");
+			break;
+		}
 	}
 	return data;
 }

@@ -21,7 +21,13 @@ public class SessionVersion {
 		return backup;
 	}
 	public String getString(){
-		return changeCount+"_"+primary.toString()+"_"+backup.toString();
+		String s =
+		 changeCount+"_"+primary.toString()+"_";
+		if(backup == null){
+			s+="0.0.0.0_0";
+		}else
+			s+=backup.toString();
+		 return s;
 	}
 	public void setPrimary(IPP myIPP) {
 		this.primary = myIPP;
@@ -37,6 +43,11 @@ public class SessionVersion {
 	public void setBackup(IPP ipp) {
 		this.backup = ipp;
 		
+	}
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return getString();
 	}
 	
 	
