@@ -11,6 +11,7 @@ import java.text.ParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 
+import com.ankit.session.model.IPP;
 import com.ankit.session.model.RPCRequest;
 import com.ankit.session.model.RPCResponse;
 import com.ankit.session.model.SessionID;
@@ -132,7 +133,8 @@ public class RPCServerThread extends Thread {
 		if(opCode == RPCRequest.WRITE){
 			DateFormat df = DateFormat.getDateInstance();
 			try {
-				request.setSessionID(new SessionID(reqArr[2]+reqArr[3]+reqArr[4]));
+				IPP newIPP = new IPP(reqArr[3],reqArr[4]);
+				request.setSessionID(new SessionID(reqArr[2],newIPP));
 				request.setSessionData(new SessionData(Integer.parseInt(reqArr[5]),reqArr[6],df.parse(reqArr[7])));
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
@@ -140,7 +142,8 @@ public class RPCServerThread extends Thread {
 				e.printStackTrace();
 			}
 		}else if(opCode == RPCRequest.READ || opCode == RPCRequest.DEL){
-			request.setSessionID(new SessionID(reqArr[2]+reqArr[3]+reqArr[4]));
+			IPP newIPP = new IPP(reqArr[3],reqArr[4]);
+			request.setSessionID(new SessionID(reqArr[2],newIPP));
 			request.setChangeCount(Integer.parseInt(reqArr[5]));
 		}else if(opCode == RPCRequest.NOOP){
 			//TODO

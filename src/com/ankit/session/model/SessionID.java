@@ -10,14 +10,6 @@ public class SessionID {
 	public IPP getServerID() {
 		return serverID;
 	}
-	public SessionID(String sessionID){
-		System.out.println("SessionID.SessionID() Session ID String :"+sessionID);
-		String[] strArr = sessionID.split("_");
-		sessionNumber = strArr[0];
-		serverID = new IPP(strArr[1],strArr[2]);
-		
-		
-	}
 	public SessionID(String sessionNum, IPP serverID){
 		this.sessionNumber = sessionNum;
 		this.serverID = serverID;

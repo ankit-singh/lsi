@@ -9,14 +9,11 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
 
 import com.ankit.session.model.IPP;
 import com.ankit.session.model.SessionID;
 import com.ankit.session.model.SessionVersion;
 import com.ankit.session.servlet.SessionData;
-import com.ankit.ssm.db.SimpleDBManager;
 
 public class MyUtil {
 	private static DatagramSocket dgSocket = null;
@@ -82,6 +79,7 @@ public class MyUtil {
 	/**
 	 * @return
 	 */
+	private static int ssno = 0;
 	public static String generateSessionNum() {
 		System.out.println("MyUtil.generateSessionId()");
 		String uidServer = new java.rmi.server.UID().toString(); // guaranteed unique
