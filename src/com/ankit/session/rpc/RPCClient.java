@@ -38,11 +38,11 @@ public class RPCClient   {
 			clientSocket.send(sendPacket);
 			byte[] receiveData = new byte[1024];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-			clientSocket.setSoTimeout(10000);
+			clientSocket.setSoTimeout(5000);
 			clientSocket.receive(receivePacket);
 			log.info("***********************************response received");
-			clientSocket.close();
 			response = ByteToResponse(receiveData);
+			clientSocket.close();
 			if(response != null){
 				log.info("***************Response to client Call ID :"+response.getCallID());
 				log.info("***************Response to client Opcode : "+response.getCallID());
