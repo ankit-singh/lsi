@@ -12,8 +12,11 @@ import java.text.ParseException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.LogFactoryImpl;
 
+import com.ankit.session.model.IPP;
 import com.ankit.session.model.RPCRequest;
 import com.ankit.session.model.RPCResponse;
+import com.ankit.session.model.SessionID;
+import com.ankit.session.model.SessionVersion;
 import com.ankit.session.servlet.SessionData;
 
 public class RPCClient   {
@@ -67,13 +70,15 @@ public class RPCClient   {
 		sb.append(opCode);
 		if(opCode != RPCRequest.NOOP){
 			sb.append("_");
-			sb.append(request.getSessionID().getString()).append("_");
+			sb.append(request.getSessionID().getString());
 		}
 		
 		if(opCode == RPCRequest.WRITE){
 			log.info("WRRRRRRRRRRRITTTTTTTTTTTTTTTT");
+			sb.append("_");
 			sb.append(request.getSessionData().toString());
-		}else if(opCode == RPCRequest.READ){
+		}else if(opCode == RPCRequest.READ || opCode == RPCRequest.DEL){
+			sb.append("_");
 			sb.append(request.getChangeCount());
 		}
 		retVal = sb.toString().getBytes();
@@ -89,22 +94,22 @@ public class RPCClient   {
 		int respCallId =Integer.parseInt(respArr[0]);
 		
 			int opCode = Integer.parseInt(respArr[1]);
-			if(opCode == RPCResponse.ALIVE){
-				response = new RPCResponse(opCode);
-				response.setCallID(respCallId);
-			}
-			else if(opCode == RPCResponse.READ_SUCCESS){
+			response = new RPCResponse(opCode);
+			response.setCallID(respCallId);
+			 if(opCode == RPCResponse.READ_SUCCESS){
 				DateFormat df = DateFormat.getDateInstance();
 				try {
-					response  = new RPCResponse(opCode,new SessionData(Integer.parseInt(respArr[0]),respArr[1],df.parse(respArr[2])));
+					IPP newIPP = new IPP(respArr[3],respArr[4]);
+					response.setSessionID(new SessionID(respArr[2],newIPP));
+					IPP pIPP = new IPP(respArr[6],respArr[7]);
+					IPP bIPP = new IPP(respArr[8],respArr[9]);
+					SessionVersion svn = new SessionVersion(Integer.parseInt(respArr[5]), pIPP, bIPP);
+					SessionData data = new SessionData(svn,respArr[10],respArr[11]);
+					response.setSessionData(data);
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
-				} catch (ParseException e) {
-					e.printStackTrace();
 				}
-			}else if(opCode == RPCResponse.WRITE_SUCCESS){
-				response = new RPCResponse(opCode);
-			}
+			 }
 		return response;
 	}
 }

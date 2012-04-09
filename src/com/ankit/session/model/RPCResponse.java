@@ -6,7 +6,7 @@ public class RPCResponse extends IMessageCodes {
 	
 	SessionData data;
 	int opCode;
-	
+	SessionID sid;
 	public RPCResponse(int opCode){
 		
 		this.opCode = opCode;
@@ -29,4 +29,12 @@ public class RPCResponse extends IMessageCodes {
 		return callID;
 	}
 	private int callID;
+
+	public void setSessionID(SessionID sessionID) {
+		this.sid = sessionID;
+	}
+	public void setSessionData(SessionData data2) {
+		// TODO Auto-generated method stub
+		this.data = data2;
+	}
 }
