@@ -15,6 +15,7 @@ import com.ankit.session.model.IPP;
 import com.ankit.session.model.RPCRequest;
 import com.ankit.session.model.RPCResponse;
 import com.ankit.session.model.SessionID;
+import com.ankit.session.model.SessionVersion;
 import com.ankit.session.servlet.ServerContext;
 import com.ankit.session.servlet.SessionData;
 import com.ankit.session.util.MyUtil;
@@ -131,14 +132,15 @@ public class RPCServerThread extends Thread {
 		int opCode = Integer.parseInt(reqArr[1]);
 		request.setOpCode(opCode);
 		if(opCode == RPCRequest.WRITE){
-			DateFormat df = DateFormat.getDateInstance();
 			try {
 				IPP newIPP = new IPP(reqArr[3],reqArr[4]);
 				request.setSessionID(new SessionID(reqArr[2],newIPP));
-				request.setSessionData(new SessionData(Integer.parseInt(reqArr[5]),reqArr[6],df.parse(reqArr[7])));
+				IPP pIPP = new IPP(reqArr[6],reqArr[7]);
+				IPP bIPP = new IPP(reqArr[8],reqArr[9]);
+				SessionVersion svn = new SessionVersion(Integer.parseInt(reqArr[5]), pIPP, bIPP);
+				SessionData data = new SessionData(svn,reqArr[10],reqArr[11]);
+				request.setSessionData(data);
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
-			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		}else if(opCode == RPCRequest.READ || opCode == RPCRequest.DEL){

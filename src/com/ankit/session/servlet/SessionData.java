@@ -1,5 +1,8 @@
 package com.ankit.session.servlet;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -28,26 +31,37 @@ public class SessionData {
 	 */
 	private Date discardTime;
 	
+	public static final DateFormat formatter = new SimpleDateFormat("yyyyMMddHmmss");
 	
 		
 	/**
 	 * @param age
 	 */
-	public SessionData() {
+	public SessionData(String message) {
 		message= "Hello User";
 		refresh(discardAge);
 	}
-	public SessionData(int age) {
-		message= "Hello User";
-		discardAge = age;
-		refresh(discardAge);
-	}
-	public SessionData(int version, String message,Date expiry){
-		this.message = message;
-		discardTime = expiry;
+	public SessionData(SessionVersion svn,String msg,Date date){
+		this.message = msg;
+		discardTime = date;
+		this.svn = svn;
 		refresh();
 	}
-	
+	public SessionData(SessionVersion svn,String msg,String date){
+		this.message = msg;
+		discardTime = string2Date(date);
+		this.svn = svn;
+		refresh();
+	}
+	 private static Date string2Date(String discardTime){
+	        Date date = null;
+	        try {
+	            date = (Date)formatter.parse(discardTime);
+	        } catch (ParseException e) {
+	           e.printStackTrace();
+	        }  
+	        return date;
+	    }
 	/**
 	 * @param age
 	 */
@@ -70,7 +84,7 @@ public class SessionData {
 	}
 	public String getString(){
 		System.out.println("SessionData.getString() Discardtime :"+discardTime);
-		return svn.getString()+"_"+message+"_"+discardTime.toString();
+		return svn.getString()+"_"+message+"_"+formatter.format(discardTime);
 	}
 	public void setSessionVersion(SessionVersion svn){
 		this.svn = svn;

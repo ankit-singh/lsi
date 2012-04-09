@@ -18,7 +18,7 @@ public class CreateHelper {
 		log.info("Session Num : "+sessionNum);
 		log.info("My IPP : "+myIPP.toString());
 		SessionID sid  = new SessionID(sessionNum, myIPP);
-		SessionData sessionData = new SessionData();
+		SessionData sessionData = new SessionData("Hello User");
 		sessionData.setSessionVersion(new SessionVersion(0,myIPP,null));
 		logSessionVersion("Before Write", sessionData.getSessionVersion());
 		WriteHelper writer = new WriteHelper();
