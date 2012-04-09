@@ -12,7 +12,6 @@ import com.ankit.session.util.MyUtil;
 public class CreateHelper {
 	private static final Log log = LogFactoryImpl.getLog(CreateHelper.class);
 	public SessionData createNewSession() {
-		log.info("Start");
 		IPP myIPP = MyUtil.getMyIPP();
 		String sessionNum  = MyUtil.generateSessionNum();
 		log.info("Session Num : "+sessionNum);

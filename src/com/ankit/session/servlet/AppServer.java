@@ -61,7 +61,6 @@ public class AppServer extends HttpServlet{
 			throws ServletException, IOException {
 		response.setContentType("text/html");
 		Cookie currentCookie = getCookie(request.getCookies());
-		log.info("Cookie in Request : "+currentCookie);
 		ServerContext.getInstance().setCurrentRequest(request);
 		ServerContext.getInstance().setCurrentResponse(response);
 		if(currentCookie != null){
@@ -79,6 +78,8 @@ public class AppServer extends HttpServlet{
 			}
 			else if(request.getParameter("cmdReplace") != null){
 				processUpdate();
+			}else{
+				processRead();
 			}
 		}
 
@@ -92,11 +93,13 @@ public class AppServer extends HttpServlet{
 
 	}
 	private void createSession(){
+		log.info("CREATE NEW SESSION");
 		CreateHelper creater = new CreateHelper();
 		SessionData data =creater.createNewSession();
 		buildResponse(data);
 	}
 	private void processUpdate(){
+		log.info("UPDATE SESSION");
 		try{
 			UpdateHelper updater = new UpdateHelper();
 			SessionData data = updater.updateSessionData();
@@ -108,6 +111,7 @@ public class AppServer extends HttpServlet{
 		}
 	}
 	private void  processLogout(){
+		log.info("LOGOUT SESSION");
 		DeleteHelper deleteHelper = new DeleteHelper();
 		SessionCookie sc= ServerContext.getInstance().getSessionCookie();
 		deleteHelper.deletSessionData(sc.getSessionID(), sc.getSessionVersion());
@@ -115,6 +119,7 @@ public class AppServer extends HttpServlet{
 	}
 	
 	private void processRead(){
+		log.info("READ SESSION");
 		try{
 			ReadHelper reader = new ReadHelper();
 			SessionData data = reader.readSessionData();

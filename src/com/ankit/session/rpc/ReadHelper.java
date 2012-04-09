@@ -1,5 +1,6 @@
 package com.ankit.session.rpc;
 
+import com.ankit.session.model.IPP;
 import com.ankit.session.model.RPCRequest;
 import com.ankit.session.model.RPCResponse;
 import com.ankit.session.model.SessionCookie;
@@ -18,7 +19,6 @@ public class ReadHelper {
 		SessionCookie cookie = ServerContext.getInstance().getSessionCookie();
 		SessionVersion svn = cookie.getSessionVersion();
 		SessionID sid = cookie.getSessionID();
-		ServerContext context = ServerContext.getInstance();
 		boolean primary = MyUtil.getMyIPP().equals(svn.getPrimary()) ;
 		boolean backup = MyUtil.getMyIPP().equals(svn.getBackup());
 		SessionData sd = null;
@@ -29,6 +29,8 @@ public class ReadHelper {
 			if(sd != null && svn.getBackup()== null){
 				WriteHelper writer = new WriteHelper();
 				sd =  writer.storeSessionData(sid, sd);
+			}else{
+				
 			}
 		}
 		//FIXME
@@ -37,16 +39,20 @@ public class ReadHelper {
 //			sd = context.getCacheTable().get(sid, svn);
 //		}
 		else{
-			RPCResponse response = handleRemoteSession(sid, svn);
-
+			RPCResponse response = getFromRemote(svn.getPrimary(), sid, svn.getChangeCount());
+			if(response == null){
+				getFromRemote(svn.getBackup(), sid, svn.getChangeCount());
+			}
 			if(response != null && response.getSessionData() != null){
-				//FIXME
+				sd = response.getSessionData();
 				if(response.getSessionData().getSessionVersion().getBackup() == null){
 					ServerContext.getInstance().getSessionStateTable().addSession(sid, response.getSessionData()); 
+					WriteHelper writer = new WriteHelper();
+					sd = writer.writeSessionData(svn.getPrimary(), sd,sid);
 				}else{
 //					context.getCacheTable().add(sid, response.getSessionData());
 				}
-				sd = response.getSessionData();
+				
 			}
 		}
 		if(sd == null){
@@ -55,6 +61,15 @@ public class ReadHelper {
 		else{
 			return sd;
 		}
+	}
+	private RPCResponse getFromRemote(IPP destIPP, SessionID sid,int chanegeCount){
+		RPCRequest readRequest = new RPCRequest();
+		readRequest.setCallID(MyUtil.getCallID());
+		readRequest.setSessionID(sid);
+		readRequest.setChangeCount(chanegeCount);
+		readRequest.setDestIPP(destIPP);
+		RPCResponse response = getResponse(readRequest);
+		return response;
 	}
 	private SessionData  handleLocalSession(SessionID sid,SessionVersion svn){
 		SessionStateTable sstbl = ServerContext.getInstance().getSessionStateTable();
@@ -72,19 +87,5 @@ public class ReadHelper {
 			}
 		}
 		return null;
-	}
-	private RPCResponse handleRemoteSession(SessionID sid,SessionVersion svn){
-		RPCRequest readRequest = new RPCRequest();
-		readRequest.setCallID(MyUtil.getCallID());
-		readRequest.setSessionID(sid);
-		readRequest.setChangeCount(svn.getChangeCount());
-		readRequest.setDestIPP(svn.getPrimary());
-		RPCResponse response = getResponse(readRequest);
-		if(response == null && svn.getBackup() != null){
-			readRequest.setCallID(MyUtil.getCallID());
-			readRequest.setDestIPP(svn.getBackup());
-			response = getResponse(readRequest);
-		}
-		return response;
 	}
 }

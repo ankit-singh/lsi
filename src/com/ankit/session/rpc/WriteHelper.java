@@ -23,41 +23,18 @@ public class WriteHelper {
 
 
 	public SessionData storeSessionData(SessionID sid,SessionData sessionData){
-		log.info("Start");
-		log.info("SessionID : "+sid );
-		log.info("SessionData : "+sessionData);
 
 		IPP myIPP = MyUtil.getMyIPP();
 		sessionData.getSessionVersion().setPrimary(myIPP);
-		logSessionVersion("Before Write", sessionData.getSessionVersion());
 		sessionData = storeBackUp(sessionData, sid);
 		ServerContext.getInstance().getSessionStateTable().addSession(sid, sessionData);
-		logSessionVersion("After Write", sessionData.getSessionVersion());
 		ServerContext.getInstance().setSessionCookie(new SessionCookie(sid,sessionData.getSessionVersion()));
-		log.info("End");
 		
 		return sessionData;
 
 	}
-	private void logSessionVersion(String msg,SessionVersion svn){
-		log.info(msg);
 
-		log.info("Change Count : "+svn.getChangeCount());
-		if(svn.getPrimary() != null){
-			log.info("Primay IPP : "+svn.getPrimary().toString());
-		}
-		else{
-			log.info("Primary NULL");
-		}
-		if(svn.getBackup() != null){
-			log.info("Backup IPP : "+svn.getBackup().toString());
-		}
-		else{
-			log.info("Backup NULL");
-		}
-	}
-
-	private SessionData writeSessionData(IPP ipp, SessionData sessionData,SessionID sid){
+	public SessionData writeSessionData(IPP ipp, SessionData sessionData,SessionID sid){
 		if(ipp != null){
 			RPCRequest writeRequest = new RPCRequest(ipp,RPCRequest.WRITE);
 			writeRequest.setSessionData(sessionData);
@@ -89,10 +66,13 @@ private SessionData storeBackUp(SessionData data, SessionID sid){
 	log.info("MEMBER LIST SIZE :"+arr.size());
 	for(String s: arr){
 		log.info("SENDING WRITE REQUEST :"+s);
-		data = writeSessionData(new IPP(s), data, sid);
-		if(data.getSessionVersion().getBackup() !=null){
-			log.info("WRITE SUCCESS");
-			break;
+		IPP desIpp = new IPP(s);
+		if (!desIpp.equals(MyUtil.getMyIPP())) {
+			data = writeSessionData(desIpp, data, sid);
+			if (data.getSessionVersion().getBackup() != null) {
+				log.info("WRITE SUCCESS");
+				break;
+			}
 		}
 	}
 	return data;

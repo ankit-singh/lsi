@@ -38,7 +38,7 @@ public class SessionData {
 	 * @param age
 	 */
 	public SessionData(String message) {
-		message= "Hello User";
+		this.message= "Hello User";
 		refresh(discardAge);
 	}
 	public SessionData(SessionVersion svn,String msg,Date date){
