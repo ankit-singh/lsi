@@ -62,12 +62,12 @@ public class MyUtil {
 		}else{
 			htmlPage.addText(htmlLine("Backup IPP : NULL"));
 		}
-		HashSet<String> mbrSet = SimpleDBManager.getInstance().getMemberSet();
-		Iterator<String> iterator  = mbrSet.iterator();
-		htmlPage.addText(htmlLine("Member List:"));
-		while(iterator.hasNext()){
-			htmlPage.addText(htmlLine("Member:"+iterator.hasNext()));
-		}
+//		HashSet<String> mbrSet = SimpleDBManager.getInstance().getMemberSet();
+//		Iterator<String> iterator  = mbrSet.iterator();
+////		htmlPage.addText(htmlLine("Member List:"));
+//		while(iterator.hasNext()){
+////			htmlPage.addText(htmlLine("Member:"+iterator.hasNext()));
+//		}
 		return htmlPage.getHtml();
 	}
 	private static String htmlLine(String s){

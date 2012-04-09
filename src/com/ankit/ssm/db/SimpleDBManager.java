@@ -90,12 +90,12 @@ public class SimpleDBManager {
 				}
 				myIPP = new IPP(myServerIP, myPort);
 				try {
+					createDomain();
 					refresh();
 				} catch (SSMException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				createDomain();
 
 			} catch (FileNotFoundException e1) {
 				log.error("File not found");
@@ -109,7 +109,6 @@ public class SimpleDBManager {
 	}
 	private void createDomain(){
 		try {
-			init();
 			simpleDB.createDomain(new CreateDomainRequest(
 					SimpleDBManager.domainName));
 			if (getSMbrSet().equals("")) {
@@ -146,6 +145,7 @@ public class SimpleDBManager {
 				newMbrList));
 	}
 	public void refresh() throws SSMException{
+		init();
 		log.info("START REFRESH");
 		log.info("Clean Member Set");
 		mbrSet.clear();
