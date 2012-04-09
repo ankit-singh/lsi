@@ -23,36 +23,36 @@ public class RPCClient   {
 	public  RPCResponse sendRequest(RPCRequest request) {
 		RPCResponse response = null;
 		try {
-			log.info("START");
+			log.info("*************************************START");
 			clientSocket = new DatagramSocket();
 			currentCallID = request.getCallID();
 			InetAddress serverIP = InetAddress.getByName(request.getIPP().getServerIP());
 			byte[] sendData = RequestToByte(request);
-			log.info("RPCClient.sendRequest() Server :"+request.getIPP().getServerIP());
-			log.info("RPCClient.sendRequest() Port : "+request.getIPP().getUdpPortID());
+			log.info("**************************RPCClient.sendRequest() Server :"+request.getIPP().getServerIP());
+			log.info("************************RPCClient.sendRequest() Port : "+request.getIPP().getUdpPortID());
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, serverIP, request.getIPP().getUdpPortID());
-			log.info("Client Socket Port :"+sendPacket.getPort());
+			log.info("************************Client Socket Port :"+sendPacket.getPort());
 			clientSocket.send(sendPacket);
 			byte[] receiveData = new byte[1024];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			clientSocket.setSoTimeout(10000);
 			clientSocket.receive(receivePacket);
-			log.info("response received");
+			log.info("***********************************response received");
 			clientSocket.close();
 			response = ByteToResponse(receiveData);
 			if(response != null){
-				log.info("Call ID :"+response.getCallID());
-				log.info("Opcode : "+response.getCallID());
+				log.info("***************Response to client Call ID :"+response.getCallID());
+				log.info("***************Response to client Opcode : "+response.getCallID());
 			}
 		}
 		catch (SocketException e) {
-			log.info("RPCClient.sendRequest() Socket Exception");
+			log.info("****************RPCClient.sendRequest() Socket Exception");
 			e.printStackTrace();
 		} catch (UnknownHostException e) {
-			log.info("RPCClient.sendRequest() UnknownHost Exception");
+			log.info("*****************RPCClient.sendRequest() UnknownHost Exception");
 			e.printStackTrace();
 		} catch (IOException e) {
-			log.info("RPCClient.sendRequest() IOException");
+			log.info("******************RPCClient.sendRequest() IOException");
 			e.printStackTrace();
 		}
 		return response;
@@ -84,7 +84,7 @@ public class RPCClient   {
 		
 		RPCResponse response = null;
 		String respStr = new String(resp).trim();
-		log.info("Response String ; "+respStr);
+		log.info("**************************Response String ; "+respStr);
 		String[] respArr = respStr.split("_");
 		int respCallId =Integer.parseInt(respArr[0]);
 		
