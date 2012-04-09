@@ -33,7 +33,7 @@ public class AppServer extends HttpServlet{
 	 * The constant cookieName
 	 */
 	private  final static String cookieName = "CS5300PROJECT1SESSIONAS2536";
-	private int sessionAge = 1;
+	private int sessionAge = 15;
 	private int cookieAge =sessionAge;
 	private static final Log log = LogFactoryImpl.getLog(AppServer.class);
 	

@@ -38,6 +38,7 @@ public class RPCClient   {
 			clientSocket.setSoTimeout(10000);
 			clientSocket.receive(receivePacket);
 			log.info("response received");
+			clientSocket.close();
 			response = ByteToResponse(receiveData);
 			if(response != null){
 				log.info("Call ID :"+response.getCallID());
@@ -68,7 +69,9 @@ public class RPCClient   {
 			sb.append("_");
 			sb.append(request.getSessionID().getString()).append("_");
 		}
+		
 		if(opCode == RPCRequest.WRITE){
+			log.info("WRRRRRRRRRRRITTTTTTTTTTTTTTTT");
 			sb.append(request.getSessionData().toString());
 		}else if(opCode == RPCRequest.READ){
 			sb.append(request.getChangeCount());

@@ -30,10 +30,12 @@ public class ReadHelper {
 				WriteHelper writer = new WriteHelper();
 				sd =  writer.storeSessionData(sid, sd);
 			}
-		}else if(context.getCacheTable().get(sid, svn) != null){
-			//if cache exists
-			sd = context.getCacheTable().get(sid, svn);
 		}
+		//FIXME
+//		else if(context.getCacheTable().get(sid, svn) != null){
+//			//if cache exists
+//			sd = context.getCacheTable().get(sid, svn);
+//		}
 		else{
 			RPCResponse response = handleRemoteSession(sid, svn);
 
@@ -42,10 +44,10 @@ public class ReadHelper {
 				if(response.getSessionData().getSessionVersion().getBackup() == null){
 					ServerContext.getInstance().getSessionStateTable().addSession(sid, response.getSessionData()); 
 				}else{
-					context.getCacheTable().add(sid, response.getSessionData());
+//					context.getCacheTable().add(sid, response.getSessionData());
 				}
+				sd = response.getSessionData();
 			}
-			sd = response.getSessionData();
 		}
 		if(sd == null){
 			throw new SessionNotFoundException();

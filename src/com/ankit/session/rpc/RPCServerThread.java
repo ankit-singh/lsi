@@ -40,8 +40,8 @@ public class RPCServerThread extends Thread {
 				serverSocket.receive(receivePacket);
 				InetAddress IPAddress = receivePacket.getAddress();
 				int port = receivePacket.getPort();
-				log.info("Packet Received from :"+IPAddress.getHostAddress());
-				log.info("Packet Recieved from Port:"+port);
+				log.info("============================================Packet Received from :"+IPAddress.getHostAddress());
+				log.info("=============================================Packet Recieved from Port:"+port);
 				sendData = proccessRequest(receiveData);
 				log.info("Sending Response :"+new String(sendData));
 				DatagramPacket sendPacket =	new DatagramPacket(sendData, sendData.length, IPAddress, port);
