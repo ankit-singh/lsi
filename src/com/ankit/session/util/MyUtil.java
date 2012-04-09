@@ -8,15 +8,15 @@ import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import com.ankit.session.model.IPP;
-import com.ankit.session.model.MemberSet;
 import com.ankit.session.model.SessionID;
 import com.ankit.session.model.SessionVersion;
 import com.ankit.session.servlet.SessionData;
+import com.ankit.ssm.db.SimpleDBManager;
 
 public class MyUtil {
 	private static DatagramSocket dgSocket = null;
@@ -62,12 +62,11 @@ public class MyUtil {
 		}else{
 			htmlPage.addText(htmlLine("Backup IPP : NULL"));
 		}
-		Collection<IPP> serverCollection = MemberSet.getInstance().getList();
-		Iterator<IPP> iterator  = serverCollection.iterator();
+		HashSet<String> mbrSet = SimpleDBManager.getInstance().getMemberSet();
+		Iterator<String> iterator  = mbrSet.iterator();
 		htmlPage.addText(htmlLine("Member List:"));
 		while(iterator.hasNext()){
-			IPP destIPP = iterator.next();
-			htmlPage.addText(htmlLine("Member:"+destIPP));
+			htmlPage.addText(htmlLine("Member:"+iterator.hasNext()));
 		}
 		return htmlPage.getHtml();
 	}

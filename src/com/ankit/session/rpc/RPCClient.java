@@ -5,7 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,7 +15,6 @@ import org.apache.commons.logging.impl.LogFactoryImpl;
 import com.ankit.session.model.RPCRequest;
 import com.ankit.session.model.RPCResponse;
 import com.ankit.session.servlet.SessionData;
-import com.ankit.ssm.exceptions.SSMException;
 
 public class RPCClient   {
 	private int currentCallID =-1; 

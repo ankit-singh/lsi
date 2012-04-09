@@ -20,7 +20,6 @@ import com.ankit.ssm.db.SimpleDBManager;
 public class WriteHelper {
 	private static final Log log = LogFactoryImpl.getLog(WriteHelper.class);
 
-	private static int writeTimeout = 3000;
 
 	public SessionData storeSessionData(SessionID sid,SessionData sessionData){
 		log.info("Start");

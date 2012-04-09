@@ -24,7 +24,6 @@ import com.amazonaws.services.simpledb.model.CreateDomainRequest;
 import com.amazonaws.services.simpledb.model.PutAttributesRequest;
 import com.amazonaws.services.simpledb.model.ReplaceableAttribute;
 import com.amazonaws.services.simpledb.model.SelectRequest;
-import com.amazonaws.services.simpledb.model.UpdateCondition;
 import com.ankit.session.model.IPP;
 import com.ankit.session.model.RPCRequest;
 import com.ankit.session.model.RPCResponse;
@@ -200,9 +199,11 @@ public class SimpleDBManager {
 			}
 		}
 		log.info("Adding Self to memebr list");
+		memberString +=myIPP.toString();
 		mbrSet.add(myIPP.toString());
 		storeMemberList(memberString, sMbrList);
 	} 
+	@SuppressWarnings("unchecked")
 	public HashSet<String> getMemberSet(){
 		return (HashSet<String>) mbrSet.clone();
 	}
