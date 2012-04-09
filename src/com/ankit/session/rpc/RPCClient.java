@@ -35,7 +35,7 @@ public class RPCClient   {
 			clientSocket.send(sendPacket);
 			byte[] receiveData = new byte[1024];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-			clientSocket.setSoTimeout(5000);
+			clientSocket.setSoTimeout(10000);
 			clientSocket.receive(receivePacket);
 			log.info("response received");
 			response = ByteToResponse(receiveData);
