@@ -66,10 +66,13 @@ public class MyUtil {
 		}
 		ArrayList<String> arr = new ArrayList<String>(SimpleDBManager.getInstance().getMemberSet());
 		Iterator<String> iterator  = arr.iterator();
-		htmlPage.addText(htmlLine("Member List:"));
+		String s = new String();
 		while(iterator.hasNext()){
-			htmlPage.addText(htmlLine("Member:"+iterator.hasNext()));
+			s +='\n';
+			s +=iterator.next();
+
 		}
+		htmlPage.addText(htmlLine("Member List: "+s));
 		return htmlPage.getHtml();
 	}
 	private static String htmlLine(String s){

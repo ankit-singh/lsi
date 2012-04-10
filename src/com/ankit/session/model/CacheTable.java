@@ -18,7 +18,7 @@ public class CacheTable {
 		log.info("GET->Cache Session ID : "+sid.getString());
 		log.info("GET->Cache Session Version :"+svn.getString());
 		SessionData sessionData= ssChace.getSession(sid);
-		if(sessionData.getSessionVersion().getChangeCount() == svn.getChangeCount()){
+		if( sessionData !=null && sessionData.getSessionVersion().getChangeCount() == svn.getChangeCount()){
 			return sessionData;
 		}else{
 			ssChace.removeSession(sid);

@@ -1,7 +1,5 @@
 package com.ankit.session.rpc;
 
-import org.apache.catalina.Server;
-
 import com.ankit.session.model.IPP;
 import com.ankit.session.model.RPCRequest;
 import com.ankit.session.model.RPCResponse;
@@ -41,7 +39,7 @@ public class ReadHelper {
 		}
 		else{
 			RPCResponse response = getFromRemote(svn.getPrimary(), sid, svn.getChangeCount());
-			if(response == null){
+			if(response == null && svn.getBackup() != null){
 				getFromRemote(svn.getBackup(), sid, svn.getChangeCount());
 			}
 			if(response != null && response.getSessionData() != null){
