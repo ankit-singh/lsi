@@ -21,6 +21,8 @@ import com.ankit.session.rpc.ReadHelper;
 import com.ankit.session.rpc.UpdateHelper;
 import com.ankit.session.util.MyUtil;
 import com.ankit.ssm.db.MembershipProbeThread;
+import com.ankit.ssm.db.SimpleDBManager;
+import com.ankit.ssm.exceptions.SSMException;
 
 /**
  * @author ankitsingh
@@ -78,7 +80,18 @@ public class AppServer extends HttpServlet{
 			}
 			else if(request.getParameter("cmdReplace") != null){
 				processUpdate();
-			}else{
+			}else if(request.getParameter("cmdRefMEM") != null){
+				try {
+					SimpleDBManager.getInstance().refresh();
+				} catch (SSMException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				processRead();
+			}else if(request.getParameter("cmdKILL") != null){
+				System.exit(0);
+			}	
+			else{
 				processRead();
 			}
 		}

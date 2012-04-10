@@ -1,5 +1,7 @@
 package com.ankit.session.rpc;
 
+import org.apache.catalina.Server;
+
 import com.ankit.session.model.IPP;
 import com.ankit.session.model.RPCRequest;
 import com.ankit.session.model.RPCResponse;
@@ -33,11 +35,10 @@ public class ReadHelper {
 				
 			}
 		}
-		//FIXME
-//		else if(context.getCacheTable().get(sid, svn) != null){
-//			//if cache exists
-//			sd = context.getCacheTable().get(sid, svn);
-//		}
+		else if(ServerContext.getInstance().getCacheTable().get(sid, svn) != null){
+			//if cache exists
+			sd = ServerContext.getInstance().getCacheTable().get(sid, svn);
+		}
 		else{
 			RPCResponse response = getFromRemote(svn.getPrimary(), sid, svn.getChangeCount());
 			if(response == null){
@@ -50,7 +51,7 @@ public class ReadHelper {
 					WriteHelper writer = new WriteHelper();
 					sd = writer.writeSessionData(svn.getPrimary(), sd,sid);
 				}else{
-//					context.getCacheTable().add(sid, response.getSessionData());
+					ServerContext.getInstance().getCacheTable().add(sid, response.getSessionData());
 				}
 				
 			}

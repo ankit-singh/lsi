@@ -7,13 +7,16 @@ import java.net.SocketException;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 
 import com.ankit.session.model.IPP;
 import com.ankit.session.model.SessionID;
 import com.ankit.session.model.SessionVersion;
 import com.ankit.session.servlet.SessionData;
+import com.ankit.ssm.db.SimpleDBManager;
 
 public class MyUtil {
 	private static DatagramSocket dgSocket = null;
@@ -45,6 +48,8 @@ public class MyUtil {
 		htmlPage.startForm("GET", "1b");
 		htmlPage.addSubmitButton("cmdRefresh","refresh");
 		htmlPage.addSubmitButton("cmdLogout", "logout");
+		htmlPage.addSubmitButton("cmdRefMEM","refreshMemberList");
+		htmlPage.addSubmitButton("cmdKILL", "Kill Server");
 		htmlPage.endForm();
 		htmlPage.addText("<br> Session Created/Refreshed Time : "+MyUtil.getCurrentTimestamp()+"</br>");
 		htmlPage.addText("<br>Session Expiry Time : "+sd.getDiscardTime().toString()+"</br>");
@@ -59,12 +64,12 @@ public class MyUtil {
 		}else{
 			htmlPage.addText(htmlLine("Backup IPP : NULL"));
 		}
-//		HashSet<String> mbrSet = SimpleDBManager.getInstance().getMemberSet();
-//		Iterator<String> iterator  = mbrSet.iterator();
-////		htmlPage.addText(htmlLine("Member List:"));
-//		while(iterator.hasNext()){
-////			htmlPage.addText(htmlLine("Member:"+iterator.hasNext()));
-//		}
+		ArrayList<String> arr = new ArrayList<String>(SimpleDBManager.getInstance().getMemberSet());
+		Iterator<String> iterator  = arr.iterator();
+		htmlPage.addText(htmlLine("Member List:"));
+		while(iterator.hasNext()){
+			htmlPage.addText(htmlLine("Member:"+iterator.hasNext()));
+		}
 		return htmlPage.getHtml();
 	}
 	private static String htmlLine(String s){
