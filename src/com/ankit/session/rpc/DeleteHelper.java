@@ -14,19 +14,21 @@ public class DeleteHelper {
 	private static final Log log = LogFactory.getLog(DeleteHelper.class);
 	
 	public void forceRemoteDelete(SessionID sid, IPP destIPP, int changeCount){
-		log.info("start");
-		log.info("SessionID : "+sid );
-		log.info("Destination IPP : "+destIPP);
-		log.info("Change count :"+changeCount);
-		int callId = MyUtil.getCallID();
-		log.info("Call ID :"+callId);
-		RPCRequest deleteRequest = new RPCRequest(destIPP, RPCRequest.DEL);
-		deleteRequest.setCallID(callId);
-		deleteRequest.setSessionID(sid);
-		deleteRequest.setChangeCount(changeCount);
-		RPCClient rpcClient = new RPCClient();
-		rpcClient.sendRequest(deleteRequest);
-		log.info("end");
+		if (destIPP != null) {
+			log.info("start");
+			log.info("SessionID : " + sid);
+			log.info("Destination IPP : " + destIPP);
+			log.info("Change count :" + changeCount);
+			int callId = MyUtil.getCallID();
+			log.info("Call ID :" + callId);
+			RPCRequest deleteRequest = new RPCRequest(destIPP, RPCRequest.DEL);
+			deleteRequest.setCallID(callId);
+			deleteRequest.setSessionID(sid);
+			deleteRequest.setChangeCount(changeCount);
+			RPCClient rpcClient = new RPCClient();
+			rpcClient.sendRequest(deleteRequest);
+			log.info("end");
+		}
 	}
 	public void deletSessionData(SessionID sid, SessionVersion svn){
 	

@@ -154,7 +154,7 @@ public class AppServer extends HttpServlet{
 
 	}
 	private void buildExpiredHTML(){
-		buildExitHTML("Session Expired", "Opps! Your Session can not be fount or has expired");
+		buildExitHTML("Session Expired", "Opps! Your Session can not be found or has expired");
 	}
 	private void buildLogoutHTML(){
 		buildExitHTML("Session Ended", "You have been logged out");

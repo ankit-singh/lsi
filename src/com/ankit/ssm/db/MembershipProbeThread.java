@@ -4,7 +4,7 @@ import com.ankit.ssm.exceptions.SSMException;
 
 public class MembershipProbeThread extends Thread
 {
-	private static int threadWaitTime = 20000;
+	private static int threadWaitTime = 6000;
 	//TODO random waitime
 	@Override
 	public void run() {
